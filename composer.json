@@ -1,0 +1,22 @@
+{
+    "name": "codeheadco/goauth",
+    "type": "yii2-extension",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Varga Gábor",
+            "email": "gabor87@outlook.com"
+        }
+    ],
+	"minimum-stability": "dev",
+	"prefer-stable": true,
+    "require": {
+		"yiisoft/yii2": "^2.0.13",
+		"codeheadco/tools": "dev-master"
+	},
+	"autoload": {
+        "psr-4": {
+            "codeheadco\\goauth\\": ""
+        }
+    }
+}
