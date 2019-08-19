@@ -23,6 +23,9 @@ use yii\web\IdentityInterface;
 class User extends ActiveRecord implements IdentityInterface
 {
     
+    const ROLE_USER = 'user';
+    const ROLE_ADMIN = 'admin';
+    
     /**
      * {@inheritdoc}
      */
@@ -79,18 +82,42 @@ class User extends ActiveRecord implements IdentityInterface
         
         return static::findIdentity($model->data);
     }
-
-    public function getAuthKey(): string
+    
+    public static function findByUsername($username)
     {
-        
+        return static::findOne([
+            'email' => $username,
+        ]);
+    }
+    
+    public function setPassword($password)
+    {
+        $this->password_hash = Yii::$app->security->generatePasswordHash($password);
+        return $this;
+    }
+
+    /**
+     * Validates password
+     *
+     * @param string $password password to validate
+     * @return bool if password provided is valid for current user
+     */
+    public function validatePassword($password)
+    {
+        return Yii::$app->security->validatePassword($password, $this->password_hash);
+    }
+
+    public function getAuthKey()
+    {
+        return $this->auth_key;
     }
 
     public function getId()
     {
-        
+        return $this->id;
     }
 
-    public function validateAuthKey($authKey): bool
+    public function validateAuthKey($authKey)
     {
         
     }

@@ -18,6 +18,12 @@ use yii\db\ActiveRecord;
  */
 class Token extends ActiveRecord
 {
+    
+    use \codeheadco\tools\JSONAttributesTrait;
+    
+    const TYPE_INVITE = 'INVITE';
+    const TYPE_PASSWORD = 'PASSWORD';
+    const TYPE_EMAIL = 'EMAIL';
 
     /**
      * {@inheritdoc}
@@ -50,6 +56,17 @@ class Token extends ActiveRecord
             'data' => Yii::t('app', 'Data'),
             'created_at' => Yii::t('app', 'Created At'),
         ];
+    }
+    
+    public static function create($type, $data)
+    {
+        $token = new static();
+        $token->type = $type;
+        $token->token = time() . '_' . Yii::$app->security->generateRandomString();
+        $token->setArrayAttribute('data', $data); 
+        $token->save(false);
+        
+        return $token;
     }
 
 }
